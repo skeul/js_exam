@@ -2,6 +2,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const socket = io.connect();
 
+    const tradesTable = document.getElementById('crypto-trades-list')
+    console.log(tradesTable);
     socket.on('connect', function (data) {
         console.log('socket is connected')
     });
@@ -30,6 +32,16 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     })
+
+    fetch("/list-crypto")
+        .then((res) => res.json())
+        .then((list) => {
+            console.log(list);
+            list.forEach(el => {
+                displayTrade(el, tradesTable)
+            });
+
+        })
 
     document.querySelectorAll('button.btn-order').forEach((btn) => {
         btn.addEventListener("click", () => {
@@ -66,4 +78,124 @@ function getChangingColor(old, now) {
 
 function formatPrice(price) {
     return price + '€'
+}
+
+function displayTrade(trade, parent) {
+    console.log(parent);
+    const tr = _e(
+        'tr',
+        parent,
+        null,
+        [
+            'bg-white',
+            'lg:hover:bg-gray-100',
+            'flex',
+            'lg:table-row',
+            'flex-row',
+            'lg:flex-row',
+            'flex-wrap',
+            'lg:flex-no-wrap',
+            'mb-10',
+            'lg:mb-0',
+        ]
+    )
+
+    _e(
+        'td',
+        tr,
+        trade.crypto,
+        [
+            'w-full',
+            'lg:w-auto',
+            'p-3',
+            'text-gray-800',
+            'text-center',
+            'border',
+            'border-b',
+            'block',
+            'lg:table-cell',
+            'relative',
+            'lg:static',
+        ]
+    )
+
+    _e(
+        'td',
+        tr,
+        trade.purchasedPrice,
+        [
+            'w-full',
+            'lg:w-auto',
+            'p-3',
+            'text-gray-800',
+            'text-center',
+            'border',
+            'border-b',
+            'text-center',
+            'block',
+            'lg:table-cell',
+            'relative',
+            'lg:static',
+        ]
+    )
+
+    _e(
+        'td',
+        tr,
+        '10€',
+        [
+            'w-full',
+            'lg:w-auto',
+            'p-3',
+            'text-gray-800',
+            'text-center',
+            'border',
+            'border-b',
+            'text-center',
+            'block',
+            'lg:table-cell',
+            'relative',
+            'lg:static',
+        ]
+    )
+
+    const action =
+        _e(
+            'td',
+            tr,
+            null,
+            [
+                'w-full',
+                'lg:w-auto',
+                'p-3',
+                'text-gray-800',
+                'text-center',
+                'border',
+                'border-b',
+                'text-center',
+                'block',
+                'lg:table-cell',
+                'relative',
+                'lg:static',
+            ]
+        )
+
+    _e(
+        'a',
+        action,
+        'Close',
+        [
+            'text-white',
+            'hover:bg-red-600',
+            'rounded',
+            'bg-red-400',
+            'py-1',
+            'px-3',
+            'text-xs',
+            'font-bold',
+            'cursor-pointer'
+        ]
+    )
+
+
 }

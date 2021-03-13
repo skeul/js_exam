@@ -2,6 +2,7 @@ const express = require('express')
 const socketio = require("socket.io")
 const http = require("http")
 const CoinbasePro = require('coinbase-pro');
+let MongoClient = require("mongodb").MongoClient;
 
 /**
 * Server params and init
@@ -11,6 +12,9 @@ const port = 3000
 const server = http.Server(app)
 const io = socketio(server)
 
+/**
+* Init crypto list
+*/
 const cryptoList = [
     {
         name: 'BTC-EUR',
@@ -25,18 +29,56 @@ const cryptoList = [
         values: Array(),
     },
 ]
+
+/**
+* Init Coinbase client
+*/
 const publicClient = new CoinbasePro.PublicClient();
+
+/**
+* Init Mongo DB
+*/
+const mongo = new MongoClient("mongodb://localhost:27017",
+    { useNewUrlParser: true, useUnifiedTopology: true });
+
+let db = null;
+mongo.connect(err => {
+    db = mongo.db("trading")
+    console.log(db);
+
+    /**
+    * Test datas
+    */
+    const trade = {
+        crypto: 'BTC-EUR',
+        purchasedPrice: 49710.46,
+        sold: false,
+        purchasedDate: Date.now(),
+    }
+
+    db.collection('trade').insertOne(trade, (err, docs) => {
+        console.log(err, docs);
+    })
+
+})
 
 /**
 * Express routing
 */
-
 app.use('/css', express.static(__dirname + '/css'))
 app.use('/js', express.static(__dirname + '/js'))
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + "/html/index.html")
 })
+
+app.get('/list-crypto', (req, res) => {
+    db.collection("trade").find({}).toArray((error, docs) => {
+        console.log(docs)
+        res.json(docs)
+    })
+})
+
 
 
 /**
