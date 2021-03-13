@@ -3,11 +3,14 @@ const socketio = require("socket.io")
 const http = require("http")
 const CoinbasePro = require('coinbase-pro');
 let MongoClient = require("mongodb").MongoClient;
+const bodyParser = require("body-parser")
+
 
 /**
 * Server params and init
 */
 const app = express()
+app.use(bodyParser.json())
 const port = 3000
 const server = http.Server(app)
 const io = socketio(server)
@@ -40,25 +43,24 @@ const publicClient = new CoinbasePro.PublicClient();
 */
 const mongo = new MongoClient("mongodb://localhost:27017",
     { useNewUrlParser: true, useUnifiedTopology: true });
-
+var ObjectID = require('mongodb').ObjectID;
 let db = null;
 mongo.connect(err => {
     db = mongo.db("trading")
-    console.log(db);
 
     /**
     * Test datas
     */
-    const trade = {
-        crypto: 'BTC-EUR',
-        purchasedPrice: 49710.46,
-        sold: false,
-        purchasedDate: Date.now(),
-    }
+    // const trade = {
+    //     crypto: 'BTC-EUR',
+    //     purchasedPrice: 49710.46,
+    //     sold: false,
+    //     purchasedDate: Date.now(),
+    // }
 
-    db.collection('trade').insertOne(trade, (err, docs) => {
-        console.log(err, docs);
-    })
+    // db.collection('trade').insertOne(trade, (err, docs) => {
+    //     console.log(err, docs);
+    // })
 
 })
 
@@ -73,13 +75,59 @@ app.get('/', (req, res) => {
 })
 
 app.get('/list-crypto', (req, res) => {
-    db.collection("trade").find({}).toArray((error, docs) => {
+    db.collection("trade").find({ "sold": false }).toArray((error, docs) => {
         console.log(docs)
         res.json(docs)
     })
 })
 
+app.post("/add", (req, res) => {
+    console.log(req.body)
+    publicClient
+        .getProductOrderBook(req.body.name)
+        .then(price => {
+            const trade = {
+                crypto: req.body.name,
+                purchasedPrice: price.asks[0][0],
+                sold: false,
+                purchasedDate: Date.now(),
+            }
+            db.collection('trade').insertOne(trade, (err, docs) => {
+                console.log(err, docs);
+                res.json(trade);
+            })
+        })
+        .catch(error => {
+            console.log(error);
+        });
+})
 
+app.post("/close", (req, res) => {
+    console.log(req.body)
+    publicClient
+        .getProductOrderBook(req.body.name)
+        .then(price => {
+            db.collection("trade")
+                .updateOne(
+                    { _id: ObjectID(req.body.id) },
+                    {
+                        $set: {
+                            "sold": true
+                        }
+                    },
+                )
+                .then((obj) => {
+                    console.log('updated', obj);
+                })
+                .catch((err) => {
+                    console.log('error mongo ');
+                })
+        })
+        .catch(error => {
+            console.log('error close');
+            //console.log(error);
+        });
+})
 
 /**
 * Socket
@@ -105,9 +153,7 @@ io.on('connect', (socket) => {
         })
     }, 2000)
 
-    socket.on('order', (data) => {
-        console.log(data)
-    })
+
 })
 
 

@@ -2,6 +2,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const socket = io.connect();
 
+    let cryptos;
+
     const tradesTable = document.getElementById('crypto-trades-list')
     console.log(tradesTable);
     socket.on('connect', function (data) {
@@ -13,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
 
     socket.on('get-price', (crypto) => {
+        cryptos = crypto;
         const cDiv = document.getElementById(crypto.name)
         cDiv.getElementsByClassName('crypto-name')[0].innerHTML = crypto.name
         cDiv.getElementsByClassName('crypto-val')[0].innerHTML = formatPrice(crypto.values[0])
@@ -31,29 +34,72 @@ document.addEventListener("DOMContentLoaded", () => {
                 )
             }
         });
+
     })
 
     fetch("/list-crypto")
         .then((res) => res.json())
         .then((list) => {
-            console.log(list);
             list.forEach(el => {
                 displayTrade(el, tradesTable)
             });
-
+        })
+        .then(() => {
+            listenClose();
         })
 
     document.querySelectorAll('button.btn-order').forEach((btn) => {
         btn.addEventListener("click", () => {
-            console.log(btn.dataset.crypto);
-            socket.emit('order', btn.dataset.crypto);
+            let crypto = {
+                name: btn.dataset.crypto,
+            }
+            fetch("/add", {
+
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                method: "POST",
+                body: JSON.stringify(crypto)
+            })
+                .then((response) => response.json())
+                .then((trade) => {
+                    displayTrade(trade, tradesTable)
+                    console.log(trade)
+                })
+                .then(() => {
+                    listenClose();
+                })
         })
     })
 
-
+    function listenClose() {
+        document.querySelectorAll('button.btn-close-order').forEach((btn) => {
+            btn.addEventListener("click", () => {
+                console.log(btn.dataset.key);
+                let crypto = {
+                    id: btn.dataset.key,
+                    name: btn.dataset.crypto,
+                }
+                fetch("/close", {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    method: "POST",
+                    body: JSON.stringify(crypto)
+                })
+                    .then((response) => response.json())
+                    .then((trade) => {
+                        displayTrade(trade, tradesTable)
+                        console.log(trade)
+                    })
+            })
+        })
+    }
 })
 
-function _e(tag, parent, text = null, className = null, id = null) {
+function _e(tag, parent, text = null, className = null, id = null, dataAttr = null) {
     let element = document.createElement(tag)
     if (text)
         element.appendChild(document.createTextNode(text))
@@ -63,6 +109,12 @@ function _e(tag, parent, text = null, className = null, id = null) {
 
     if (className !== null)
         element.classList.add(...className)
+
+    if (dataAttr !== null)
+        Object.entries(dataAttr).forEach(data => {
+            const [key, value] = data
+            element.setAttribute(key, value)
+        })
 
     return element
 }
@@ -81,7 +133,6 @@ function formatPrice(price) {
 }
 
 function displayTrade(trade, parent) {
-    console.log(parent);
     const tr = _e(
         'tr',
         parent,
@@ -181,7 +232,7 @@ function displayTrade(trade, parent) {
         )
 
     _e(
-        'a',
+        'button',
         action,
         'Close',
         [
@@ -193,9 +244,14 @@ function displayTrade(trade, parent) {
             'px-3',
             'text-xs',
             'font-bold',
-            'cursor-pointer'
-        ]
+            'cursor-pointer',
+            'btn-close-order'
+        ],
+        null,
+        {
+            'data-key': trade._id,
+            'data-crypto': trade.crypto
+        }
+
     )
-
-
 }
