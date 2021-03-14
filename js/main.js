@@ -2,24 +2,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const socket = io.connect();
 
-    let cryptos;
     let trades = null;
 
     const tradesTable = document.getElementById('crypto-trades-list')
     const closedTradesTable = document.getElementById('crypto-closed-trades-list')
 
+    /**
+    * On socket connected
+    */
     socket.on('connect', function (data) {
         console.log('socket is connected')
     });
 
+    /**
+    * On socket get prices from Coinbase API
+    */
     socket.on('get-price', (crypto) => {
-        cryptos = crypto;
+        /**
+        * Display current price in card
+        */
         const cDiv = document.getElementById(crypto.name)
         cDiv.getElementsByClassName('crypto-name')[0].innerHTML = crypto.name
         cDiv.getElementsByClassName('crypto-val')[0].innerHTML = formatPrice(crypto.values[0])
+
+        /**
+        * Display prices list evolution
+        */
         const cList = cDiv.getElementsByClassName('crypto-list')[0]
         cList.innerHTML = '';
-
         crypto.values.forEach((element, index) => {
             if (index !== 0) {
                 _e(
@@ -36,8 +46,8 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         /**
-         * Check gain / loss for all trades and display in trades table
-         */
+        * Check gain / loss for all trades and display in trades table
+        */
         if (trades != null) {
             trades.forEach((trade) => {
                 if (trade.crypto === crypto.name && !trade.sold) {
@@ -52,6 +62,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     })
 
+    /**
+    * Get list of trades
+    */
     fetch("/list-crypto")
         .then((res) => res.json())
         .then((list) => {
@@ -64,6 +77,9 @@ document.addEventListener("DOMContentLoaded", () => {
             listenClose();
         })
 
+    /**
+    * Listener and event for open new trade
+    */
     document.querySelectorAll('button.btn-order').forEach((btn) => {
         btn.addEventListener("click", () => {
             let crypto = {
@@ -82,7 +98,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 .then((trade) => {
                     displayTrade(trade, tradesTable)
                     trades.push(trade)
-                    console.log(trade)
                 })
                 .then(() => {
                     listenClose();
@@ -90,10 +105,12 @@ document.addEventListener("DOMContentLoaded", () => {
         })
     })
 
+    /**
+     * Func for listener and event for close a trade
+     */
     function listenClose() {
         document.querySelectorAll('button.btn-close-order').forEach((btn) => {
             btn.addEventListener("click", () => {
-                console.log(btn.dataset.key);
                 let crypto = {
                     id: btn.dataset.key,
                     name: btn.dataset.crypto,
@@ -108,10 +125,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 })
                     .then((response) => response.json())
                     .then((trade) => {
-                        console.log(trades);
                         var removeIndex = trades.map(function (item) { return item._id; }).indexOf(trade._id);
                         trades.splice(removeIndex, 1)
-                        console.log(trades);
                         let removeRow = document.getElementById(trade._id);
                         removeRow.remove()
                         displayClosedTrade(trade, closedTradesTable)
@@ -121,6 +136,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 })
 
+/**
+ * Function to display nex element
+ * @param {string} tag 
+ * @param {any} parent 
+ * @param {string} text 
+ * @param {string[]} className 
+ * @param {string} id 
+ * @param {object[]} dataAttr 
+ * @returns 
+ */
 function _e(tag, parent, text = null, className = null, id = null, dataAttr = null) {
     let element = document.createElement(tag)
     if (text)
@@ -141,6 +166,12 @@ function _e(tag, parent, text = null, className = null, id = null, dataAttr = nu
     return element
 }
 
+/**
+ * Function to get price text color evolution
+ * @param {float} old 
+ * @param {float} now 
+ * @returns 
+ */
 function getChangingColor(old, now) {
     if (now > old)
         return 'text-green-400'
@@ -150,6 +181,11 @@ function getChangingColor(old, now) {
         return 'text-gray-400'
 }
 
+/**
+ * Function to get bg variation color
+ * @param {float} color 
+ * @returns 
+ */
 function getVariationColor(color) {
     if (color > 0)
         return 'bg-green-400'
@@ -159,10 +195,20 @@ function getVariationColor(color) {
         return 'bg-gray-400'
 }
 
+/**
+ * Function to format price with €
+ * @param {float} price 
+ * @returns 
+ */
 function formatPrice(price) {
     return price + '€'
 }
 
+/**
+ * function to display trade in oned trade table
+ * @param {object} trade 
+ * @param {any} parent 
+ */
 function displayTrade(trade, parent) {
     const tr = _e(
         'tr',
@@ -290,6 +336,11 @@ function displayTrade(trade, parent) {
     )
 }
 
+/**
+ * Function to display closed trades in table
+ * @param {object} trade 
+ * @param {any} parent 
+ */
 function displayClosedTrade(trade, parent) {
     trade.variation = getPercent(trade['purchasedPrice'], trade['selledPrice'])
     const tr = _e(
@@ -356,6 +407,11 @@ function displayClosedTrade(trade, parent) {
     })
 }
 
+/**
+ * Function to display variation in table
+ * @param {float} value 
+ * @param {any} parent 
+ */
 function displayVariation(value, parent) {
     _e(
         'span',
@@ -373,6 +429,12 @@ function displayVariation(value, parent) {
     )
 }
 
+/**
+ * Function to get price variation
+ * @param {float} buy 
+ * @param {float} sell 
+ * @returns 
+ */
 function getPercent(buy, sell) {
     return ((parseFloat(sell) - parseFloat(buy)) * 100 / parseFloat(sell)).toFixed(2)
 }
