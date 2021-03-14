@@ -10,173 +10,107 @@
 </head>
 
 <body>
-    <div class="container mx-auto">
-        <h1>Crypto Trading App</h1>
-
-        <div class="flex items-center min-h-screen bg-gray-50 dark:bg-gray-900 flex-col">
-            <div class="container max-w-6xl px-5 mx-auto my-28">
-                <div class="grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
-                    <div id="BTC-EUR" class="p-5 bg-white rounded shadow-md">
-                        <div class="text-base text-gray-400 crypto-name"></div>
-                        <div class="flex items-center pt-1">
-                            <div class="text-2xl font-bold text-gray-900 crypto-val"></div>
-                            <span
-                                class="flex items-center px-2 py-0.5 mx-2 text-sm text-green-600 bg-green-100 rounded-full">
-                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M18 15L12 9L6 15" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"></path>
-                                </svg>
-                                <span>1.8%</span>
-                            </span>
-                        </div>
-                        <ul class="crypto-list p-4 mt-5 bg-gray-50">
-                            <svg
-                                class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-10 w-10 m-auto">
-                            </svg>
-                        </ul>
-                        <div class="flex text-center w-100 mt-5 ">
-                            <button
-                                class="bg-blue-600 hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded shadow m-auto btn-order"
-                                data-crypto='BTC-EUR'>
-                                Place order
-                            </button>
-                        </div>
+    <div class="flex items-center min-h-screen bg-gray-50 dark:bg-gray-900 flex-col">
+        <div class="container px-5 mx-auto mt-10">
+            <h1 class="text-6xl font-bold text-center mb-10">
+                Crypto Trading App
+            </h1>
+            <div class="grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
+                <div id="BTC-EUR" class="p-5 bg-white rounded shadow-md text-center">
+                    <div class="text-base text-gray-400 crypto-name"></div>
+                    <div class="text-2xl font-bold text-gray-900 crypto-val"></div>
+                    <ul class="crypto-list p-4 mt-5 bg-gray-50">
+                        <svg
+                            class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-10 w-10 m-auto">
+                        </svg>
+                    </ul>
+                    <div class="flex text-center w-100 mt-5 ">
+                        <button
+                            class="bg-blue-600 hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded shadow m-auto btn-order"
+                            data-crypto='BTC-EUR'>
+                            Place order
+                        </button>
                     </div>
-                    <div id="ETH-EUR" class="p-5 bg-white rounded shadow-md">
-                        <div class="text-base text-gray-400 crypto-name"></div>
-                        <div class="flex items-center pt-1">
-                            <div class="text-2xl font-bold text-gray-900 crypto-val"></div>
-                            <span
-                                class="flex items-center px-2 py-0.5 mx-2 text-sm text-red-600 bg-red-100 rounded-full">
-                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"></path>
-                                </svg>
-                                <span>2.5%</span>
-                            </span>
-                        </div>
-                        <ul class="crypto-list p-4 mt-5 bg-gray-50">
-                            <svg
-                                class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-10 w-10 m-auto">
-                            </svg>
-                        </ul>
-                        <div class="flex text-center w-100 mt-5 ">
-                            <button
-                                class="bg-blue-600 hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded shadow m-auto btn-order"
-                                data-crypto='ETH-EUR'>
-                                Place order
-                            </button>
-                        </div>
+                </div>
+                <div id="ETH-EUR" class="p-5 bg-white rounded shadow-md text-center">
+                    <div class="text-base text-gray-400 crypto-name"></div>
+                    <div class="text-2xl font-bold text-gray-900 crypto-val"></div>
+                    <ul class="crypto-list p-4 mt-5 bg-gray-50">
+                        <svg
+                            class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-10 w-10 m-auto">
+                        </svg>
+                    </ul>
+                    <div class="flex text-center w-100 mt-5 ">
+                        <button
+                            class="bg-blue-600 hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded shadow m-auto btn-order"
+                            data-crypto='ETH-EUR'>
+                            Place order
+                        </button>
                     </div>
-                    <div id="LTC-EUR" class="p-5 bg-white rounded shadow-md">
-                        <div class="text-base text-gray-400 crypto-name"></div>
-                        <div class="flex items-center pt-1">
-                            <div class="text-2xl font-bold text-gray-900 crypto-val"></div>
-                            <span
-                                class="flex items-center px-2 py-0.5 mx-2 text-sm text-green-600 bg-green-100 rounded-full">
-                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M18 15L12 9L6 15" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"></path>
-                                </svg>
-                                <span>5.2%</span>
-                            </span>
-                        </div>
-                        <ul class="crypto-list p-4 mt-5 bg-gray-50">
-                            <svg
-                                class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-10 w-10 m-auto">
-                            </svg>
-                        </ul>
-                        <div class="flex text-center w-100 mt-5 ">
-                            <button
-                                class="bg-blue-600 hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded shadow m-auto btn-order"
-                                data-crypto='LTC-EUR'>
-                                Place order
-                            </button>
-                        </div>
+                </div>
+                <div id="LTC-EUR" class="p-5 bg-white rounded shadow-md text-center">
+                    <div class="text-base text-gray-400 crypto-name"></div>
+                    <div class="text-2xl font-bold text-gray-900 crypto-val"></div>
+                    <ul class="crypto-list p-4 mt-5 bg-gray-50">
+                        <svg
+                            class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-10 w-10 m-auto">
+                        </svg>
+                    </ul>
+                    <div class="flex text-center w-100 mt-5 ">
+                        <button
+                            class="bg-blue-600 hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded shadow m-auto btn-order"
+                            data-crypto='LTC-EUR'>
+                            Place order
+                        </button>
                     </div>
                 </div>
             </div>
-            <div class="container max-w-6xl px-5 mx-auto my-28">
-                <table class="border-collapse w-full">
-                    <thead>
-                        <tr>
-                            <th
-                                class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-                                Crypto</th>
-                            <th
-                                class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-                                Purchased Price</th>
-                            <th
-                                class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-                                Gain/Loss</th>
-                            <th
-                                class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-                                Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="crypto-trades-list">
-                        <tr
-                            class="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">
-                            <td
-                                class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
-                                <span
-                                    class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Company
-                                    name</span>
-                                KnobHome
-                            </td>
-                            <td
-                                class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
-                                <span
-                                    class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Country</span>
-                                German
-                            </td>
-                            <td
-                                class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
-                                <span
-                                    class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Status</span>
-                                <span class="rounded bg-red-400 py-1 px-3 text-xs font-bold">deleted</span>
-                            </td>
-                            <td
-                                class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
-                                <span
-                                    class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Actions</span>
-                                <a href="#" class="text-blue-400 hover:text-blue-600 underline">Edit</a>
-                                <a href="#" class="text-blue-400 hover:text-blue-600 underline pl-6">Remove</a>
-                            </td>
-                        </tr>
-                        <tr
-                            class="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">
-                            <td
-                                class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
-                                <span
-                                    class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Company
-                                    name</span>
-                                Squary
-                            </td>
-                            <td
-                                class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
-                                <span
-                                    class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Country</span>
-                                Schweden
-                            </td>
-                            <td
-                                class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
-                                <span
-                                    class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Status</span>
-                                <span class="rounded bg-green-400 py-1 px-3 text-xs font-bold">active</span>
-                            </td>
-                            <td
-                                class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
-                                <span
-                                    class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Actions</span>
-                                <a href="#" class="text-blue-400 hover:text-blue-600 underline">Edit</a>
-                                <a href="#" class="text-blue-400 hover:text-blue-600 underline pl-6">Remove</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
         </div>
+        <div class="container max-w-6xl px-5 mx-auto mt-28 rounded ">
+            <table class="border-collapse w-full rounded shadow-md">
+                <thead>
+                    <tr>
+                        <th
+                            class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
+                            Crypto</th>
+                        <th
+                            class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
+                            Purchased Price</th>
+                        <th
+                            class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
+                            Gain/Loss</th>
+                        <th
+                            class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
+                            Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="crypto-trades-list">
+                </tbody>
+            </table>
+        </div>
+        <div class="container max-w-6xl px-5 mx-auto mt-28 rounded ">
+            <table class="border-collapse w-full rounded shadow-md">
+                <thead>
+                    <tr>
+                        <th
+                            class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
+                            Crypto</th>
+                        <th
+                            class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
+                            Purchased Price</th>
+                        <th
+                            class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
+                            Selled Price</th>
+                        <th
+                            class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
+                            Gain/Loss</th>
+                    </tr>
+                </thead>
+                <tbody id="crypto-closed-trades-list">
+                </tbody>
+            </table>
+        </div>
+    </div>
     </div>
     <script src="../js/socket.io.min.js"></script>
     <script src="../js/main.js"></script>

@@ -3,16 +3,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const socket = io.connect();
 
     let cryptos;
+    let trades = null;
 
     const tradesTable = document.getElementById('crypto-trades-list')
-    console.log(tradesTable);
+    const closedTradesTable = document.getElementById('crypto-closed-trades-list')
+
     socket.on('connect', function (data) {
         console.log('socket is connected')
     });
-
-    socket.on('message', (data) => {
-        console.log(data);
-    })
 
     socket.on('get-price', (crypto) => {
         cryptos = crypto;
@@ -21,6 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
         cDiv.getElementsByClassName('crypto-val')[0].innerHTML = formatPrice(crypto.values[0])
         const cList = cDiv.getElementsByClassName('crypto-list')[0]
         cList.innerHTML = '';
+
         crypto.values.forEach((element, index) => {
             if (index !== 0) {
                 _e(
@@ -35,13 +34,34 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
+        /**
+         * Check gain / loss for all trades and display in trades table
+         */
+        if (trades != null) {
+            trades.forEach((trade) => {
+                if (trade.crypto === crypto.name && !trade.sold) {
+                    let variation = (parseFloat(crypto.values[0]) - parseFloat(trade.purchasedPrice)) * 100 / parseFloat(crypto.values[0])
+                    const currentRow = document.getElementById(trade._id)
+                    // console.log(currentRow);
+                    let currentCell = currentRow.getElementsByClassName('trade-variation')[0]
+                    currentCell.innerHTML = variation.toFixed(2) + '%';
+                    currentCell.classList.remove('bg-green-100', 'bg-red-100')
+                    if (variation.toFixed(2) > 0)
+                        currentCell.classList.add('bg-green-100')
+                    else if (variation.toFixed(2) < 0)
+                        currentCell.classList.add('bg-red-100')
+                }
+            })
+        }
+
     })
 
     fetch("/list-crypto")
         .then((res) => res.json())
         .then((list) => {
+            trades = list;
             list.forEach(el => {
-                displayTrade(el, tradesTable)
+                el.sold ? displayClosedTrade(el, closedTradesTable) : displayTrade(el, tradesTable)
             });
         })
         .then(() => {
@@ -65,6 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 .then((response) => response.json())
                 .then((trade) => {
                     displayTrade(trade, tradesTable)
+                    trades.push(trade)
                     console.log(trade)
                 })
                 .then(() => {
@@ -91,8 +112,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 })
                     .then((response) => response.json())
                     .then((trade) => {
-                        displayTrade(trade, tradesTable)
-                        console.log(trade)
+                        console.log(trades);
+                        var removeIndex = trades.map(function (item) { return item._id; }).indexOf(trade._id);
+                        trades.splice(removeIndex, 1)
+                        console.log(trades);
+                        let removeRow = document.getElementById(trade._id);
+                        removeRow.remove()
+                        displayClosedTrade(trade, closedTradesTable)
                     })
             })
         })
@@ -148,7 +174,8 @@ function displayTrade(trade, parent) {
             'lg:flex-no-wrap',
             'mb-10',
             'lg:mb-0',
-        ]
+        ],
+        trade._id
     )
 
     _e(
@@ -193,7 +220,7 @@ function displayTrade(trade, parent) {
     _e(
         'td',
         tr,
-        '10€',
+        null,
         [
             'w-full',
             'lg:w-auto',
@@ -207,6 +234,7 @@ function displayTrade(trade, parent) {
             'lg:table-cell',
             'relative',
             'lg:static',
+            'trade-variation',
         ]
     )
 
@@ -237,9 +265,9 @@ function displayTrade(trade, parent) {
         'Close',
         [
             'text-white',
-            'hover:bg-red-600',
+            'hover:bg-gray-600',
             'rounded',
-            'bg-red-400',
+            'bg-gray-400',
             'py-1',
             'px-3',
             'text-xs',
@@ -254,4 +282,55 @@ function displayTrade(trade, parent) {
         }
 
     )
+}
+
+function displayClosedTrade(trade, parent) {
+    trade.variation = getPercent(trade['purchasedPrice'], trade['selledPrice'])
+    const tr = _e(
+        'tr',
+        parent,
+        null,
+        [
+            'bg-white',
+            'lg:hover:bg-gray-100',
+            'flex',
+            'lg:table-row',
+            'flex-row',
+            'lg:flex-row',
+            'flex-wrap',
+            'lg:flex-no-wrap',
+            'mb-10',
+            'lg:mb-0',
+        ],
+        trade._id
+    )
+
+    Object.entries(trade).forEach((el) => {
+        const [key, value] = el
+        if (key === 'crypto' || key === 'purchasedPrice' || key === 'selledPrice' || key === 'variation') {
+            console.log(key);
+            _e(
+                'td',
+                tr,
+                key === 'variation' ? value + '%' : value,
+                [
+                    'w-full',
+                    'lg:w-auto',
+                    'p-3',
+                    'text-gray-800',
+                    'text-center',
+                    'border',
+                    'border-b',
+                    'block',
+                    'lg:table-cell',
+                    'relative',
+                    'lg:static',
+                ]
+            )
+        }
+    })
+}
+
+function getPercent(buy, sell) {
+    return ((parseFloat(sell) - parseFloat(buy)) * 100 / parseFloat(sell)).toFixed(2)
 }

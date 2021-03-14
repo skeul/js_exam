@@ -75,7 +75,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/list-crypto', (req, res) => {
-    db.collection("trade").find({ "sold": false }).toArray((error, docs) => {
+    db.collection("trade").find().toArray((error, docs) => {
         console.log(docs)
         res.json(docs)
     })
@@ -108,16 +108,19 @@ app.post("/close", (req, res) => {
         .getProductOrderBook(req.body.name)
         .then(price => {
             db.collection("trade")
-                .updateOne(
+                .findOneAndUpdate(
                     { _id: ObjectID(req.body.id) },
                     {
                         $set: {
-                            "sold": true
+                            "sold": true,
+                            "selledPrice": price.asks[0][0],
                         }
                     },
+                    { returnOriginal: false },
                 )
                 .then((obj) => {
                     console.log('updated', obj);
+                    res.json(obj.value);
                 })
                 .catch((err) => {
                     console.log('error mongo ');
