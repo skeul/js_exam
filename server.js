@@ -69,6 +69,7 @@ mongo.connect(err => {
 */
 app.use('/css', express.static(__dirname + '/css'))
 app.use('/js', express.static(__dirname + '/js'))
+app.use('/assets', express.static(__dirname + '/assets'))
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + "/html/index.html")

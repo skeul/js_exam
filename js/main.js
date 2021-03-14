@@ -28,7 +28,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     formatPrice(element),
                     [
                         getChangingColor(crypto.values[index + 1], element),
-                        'space-y-2'
+                        'space-y-1',
+                        'text-xs'
                     ]
                 )
             }
@@ -42,14 +43,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (trade.crypto === crypto.name && !trade.sold) {
                     let variation = (parseFloat(crypto.values[0]) - parseFloat(trade.purchasedPrice)) * 100 / parseFloat(crypto.values[0])
                     const currentRow = document.getElementById(trade._id)
-                    // console.log(currentRow);
                     let currentCell = currentRow.getElementsByClassName('trade-variation')[0]
-                    currentCell.innerHTML = variation.toFixed(2) + '%';
-                    currentCell.classList.remove('bg-green-100', 'bg-red-100')
-                    if (variation.toFixed(2) > 0)
-                        currentCell.classList.add('bg-green-100')
-                    else if (variation.toFixed(2) < 0)
-                        currentCell.classList.add('bg-red-100')
+                    currentCell.innerHTML = '';
+                    displayVariation(variation.toFixed(2), currentCell)
                 }
             })
         }
@@ -154,6 +150,15 @@ function getChangingColor(old, now) {
         return 'text-gray-400'
 }
 
+function getVariationColor(color) {
+    if (color > 0)
+        return 'bg-green-400'
+    else if (color < 0)
+        return 'bg-red-400'
+    else
+        return 'bg-gray-400'
+}
+
 function formatPrice(price) {
     return price + '€'
 }
@@ -194,13 +199,14 @@ function displayTrade(trade, parent) {
             'lg:table-cell',
             'relative',
             'lg:static',
+            trade.crypto.toLowerCase(),
         ]
     )
 
     _e(
         'td',
         tr,
-        trade.purchasedPrice,
+        formatPrice(trade.purchasedPrice),
         [
             'w-full',
             'lg:w-auto',
@@ -308,27 +314,63 @@ function displayClosedTrade(trade, parent) {
     Object.entries(trade).forEach((el) => {
         const [key, value] = el
         if (key === 'crypto' || key === 'purchasedPrice' || key === 'selledPrice' || key === 'variation') {
-            console.log(key);
-            _e(
-                'td',
-                tr,
-                key === 'variation' ? value + '%' : value,
-                [
-                    'w-full',
-                    'lg:w-auto',
-                    'p-3',
-                    'text-gray-800',
-                    'text-center',
-                    'border',
-                    'border-b',
-                    'block',
-                    'lg:table-cell',
-                    'relative',
-                    'lg:static',
-                ]
-            )
+            const td =
+                _e(
+                    'td',
+                    tr,
+                    (key === 'purchasedPrice' || key === 'selledPrice') ? formatPrice(value) : (key === 'variation' ? null : value),
+                    [
+                        'w-full',
+                        'lg:w-auto',
+                        'p-3',
+                        'text-gray-800',
+                        'text-center',
+                        'border',
+                        'border-b',
+                        'block',
+                        'lg:table-cell',
+                        'relative',
+                        'lg:static',
+                        'items-center',
+                        'justify-center',
+                        value.toLowerCase(),
+                    ]
+                )
+            if (key === 'variation') {
+                _e(
+                    'span',
+                    td,
+                    value + '%',
+                    [
+                        'rounded',
+                        'py-1',
+                        'px-3',
+                        'text-xs',
+                        'font-bold',
+                        'text-gray-100',
+                        getVariationColor(value),
+                    ]
+                )
+            }
         }
     })
+}
+
+function displayVariation(value, parent) {
+    _e(
+        'span',
+        parent,
+        value + '%',
+        [
+            'rounded',
+            'py-1',
+            'px-3',
+            'text-xs',
+            'font-bold',
+            'text-gray-100',
+            getVariationColor(value),
+        ]
+    )
 }
 
 function getPercent(buy, sell) {

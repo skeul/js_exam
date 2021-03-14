@@ -13,5 +13,54 @@
     transform: rotate(0deg); }
   100% {
     transform: rotate(360deg); } }
+.current-prices .crypto-name::before {
+  content: '';
+  display: inline-block;
+  vertical-align: middle;
+  width: 35px;
+  height: 35px;
+  margin-right: 5px;
+  background-repeat: no-repeat;
+  background-position: center; }
+.current-prices #BTC-EUR .crypto-name::before {
+  background-image: url("../assets/svg/BTC.svg"); }
+.current-prices #ETH-EUR .crypto-name::before {
+  background-image: url("../assets/svg/ETH.svg"); }
+.current-prices #LTC-EUR .crypto-name::before {
+  background-image: url("../assets/svg/LTC.svg"); }
+
+#crypto-trades-list .btc-eur::before, #crypto-closed-trades-list .btc-eur::before {
+  content: '';
+  display: inline-block;
+  vertical-align: middle;
+  width: 25px;
+  height: 25px;
+  margin-right: 5px;
+  background-image: url("../assets/svg/BTC.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px; }
+#crypto-trades-list .eth-eur::before, #crypto-closed-trades-list .eth-eur::before {
+  content: '';
+  display: inline-block;
+  vertical-align: middle;
+  width: 25px;
+  height: 25px;
+  margin-right: 5px;
+  background-image: url("../assets/svg/ETH.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px; }
+#crypto-trades-list .ltc-eur::before, #crypto-closed-trades-list .ltc-eur::before {
+  content: '';
+  display: inline-block;
+  vertical-align: middle;
+  width: 25px;
+  height: 25px;
+  margin-right: 5px;
+  background-image: url("../assets/svg/LTC.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px; }
 
 /*# sourceMappingURL=style.css.map */
