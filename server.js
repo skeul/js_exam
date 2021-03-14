@@ -75,6 +75,9 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + "/html/index.html")
 })
 
+/**
+ * Retrive and send all trades from datbase
+ */
 app.get('/list-crypto', (req, res) => {
     db.collection("trade").find().toArray((error, docs) => {
         console.log(docs)
@@ -82,6 +85,9 @@ app.get('/list-crypto', (req, res) => {
     })
 })
 
+/**
+ * Add trade event to add trade in database
+ */
 app.post("/add", (req, res) => {
     console.log(req.body)
     publicClient
@@ -103,6 +109,9 @@ app.post("/add", (req, res) => {
         });
 })
 
+/**
+ * Close trade event to close trade in database
+ */
 app.post("/close", (req, res) => {
     console.log(req.body)
     publicClient
@@ -129,14 +138,12 @@ app.post("/close", (req, res) => {
         })
         .catch(error => {
             console.log('error close');
-            //console.log(error);
         });
 })
 
 /**
 * Socket
 */
-
 io.on('connect', (socket) => {
     console.log(`Socket server is connected.`);
     socket.emit('message', 'Socket is connected. Ok from server');
@@ -159,15 +166,5 @@ io.on('connect', (socket) => {
 
 
 })
-
-
-
-
-// setInterval(() => {
-//     io.emit('connected', connected)
-//     connected = {}
-// }, 2000)
-
-
 
 server.listen(port, () => console.log(`Listening on port ${port}`))
