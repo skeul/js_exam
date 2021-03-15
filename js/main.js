@@ -112,6 +112,24 @@ document.addEventListener("DOMContentLoaded", () => {
     })
 
     /**
+    * Listener and event for open historic modal
+    */
+    document.querySelectorAll('button.btn-show-modal').forEach((btn) => {
+        btn.addEventListener("click", () => {
+            document.getElementById('chart-modal').classList.remove('hide')
+            getHistoricRates(btn.dataset.crypto)
+        })
+    })
+
+    /**
+    * Listener and event for close historic modal
+    */
+    document.querySelector('#chart-modal .close-chart').addEventListener("click", () => {
+        document.getElementById('chart-modal').classList.add('hide')
+        document.getElementById('chart').innerHTML = ''
+    })
+
+    /**
      * Func for listener and event for close a trade
      */
     function listenClose() {
@@ -141,6 +159,9 @@ document.addEventListener("DOMContentLoaded", () => {
         })
     }
 
+    /**
+     * Function to listen currencies filters
+     */
     function listenFilters() {
         document.querySelectorAll('button.btn-filter-crypto').forEach((btn) => {
             btn.addEventListener("click", () => {
@@ -152,6 +173,66 @@ document.addEventListener("DOMContentLoaded", () => {
                 })
             })
         })
+    }
+
+    /**
+     * Function to get historical data and display in chart
+     * @param {string} crypto 
+     */
+    function getHistoricRates(crypto) {
+
+        fetch("/histo", {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify({
+                name: crypto,
+            })
+        })
+            .then((res) => res.json())
+            .then((list) => {
+
+                var options = {
+                    series: [{
+                        data: []
+                    }],
+                    chart: {
+                        type: 'candlestick',
+                        height: 350,
+                        toolbar: {
+                            show: false,
+                        },
+                    },
+                    title: {
+                        text: 'Historique des prix pour ' + crypto,
+                        align: 'left'
+                    },
+                    xaxis: {
+                        type: 'datetime'
+                    },
+                    yaxis: {
+                        tooltip: {
+                            enabled: true
+                        }
+                    }
+                };
+
+                list.forEach(el => {
+                    let objData = {
+                        x: null,
+                        y: null,
+                    }
+                    el.pop()
+                    objData.x = new Date(el[0] * 1000)
+                    objData.y = [el[3], el[2], el[1], el[4]]
+                    options.series[0].data.push(objData)
+                });
+
+                var chart = new ApexCharts(document.querySelector("#chart"), options);
+                chart.render();
+            })
     }
 })
 

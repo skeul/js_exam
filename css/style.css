@@ -66,6 +66,16 @@
   background-position: center;
   background-size: 20px; }
 
+#chart-modal .chart-container {
+  position: relative; }
+  #chart-modal .chart-container .close-chart {
+    color: black;
+    position: absolute;
+    right: 10px;
+    top: 0;
+    cursor: pointer;
+    font-size: 30px; }
+
 .hide {
   display: none; }
 

@@ -80,13 +80,20 @@ app.get('/', (req, res) => {
  */
 app.get('/list-crypto', (req, res) => {
     db.collection("trade").find().toArray((error, docs) => {
-        res.set({
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-        });
         console.log(docs)
         res.json(docs)
     })
+})
+
+app.post('/histo', (req, res) => {
+    publicClient
+        .getProductHistoricRates(req.body.name)
+        .then(data => {
+            res.json(data)
+        })
+        .catch(error => {
+            console.log(error);
+        });
 })
 
 /**

@@ -10,6 +10,13 @@
 </head>
 
 <body>
+    <div id="chart-modal"
+        class="flex items-center justify-center bg-black bg-opacity-25 h-screen w-screen fixed inset-0 hide">
+        <div class="chart-container bg-white w-9/12 p-5 pt-10">
+            <span class="close-chart">X</span>
+            <div id="chart"></div>
+        </div>
+    </div>
     <div class="flex items-center min-h-screen bg-gray-50 dark:bg-gray-900 flex-col mb-10">
         <div class="container px-5 mx-auto mt-10">
             <h1 class="text-4xl font-bold text-center mb-10">
@@ -55,6 +62,11 @@
                         data-crypto="BTC-EUR">
                         Filtrer
                     </button>
+                    <button
+                        class="text-white hover:bg-gray-600 rounded bg-gray-400 py-1 px-3 text-xs font-bold cursor-pointer btn-show-modal mt-1"
+                        data-crypto="BTC-EUR">
+                        Historique
+                    </button>
                 </div>
                 <div id="ETH-EUR" class="p-5 bg-white rounded shadow-md text-center">
                     <div class="text-xl text-gray-400 crypto-name flex items-center justify-center mb-2"></div>
@@ -76,6 +88,11 @@
                         data-crypto="ETH-EUR">
                         Filtrer
                     </button>
+                    <button
+                        class="text-white hover:bg-gray-600 rounded bg-gray-400 py-1 px-3 text-xs font-bold cursor-pointer btn-show-modal mt-1"
+                        data-crypto="ETH-EUR">
+                        Historique
+                    </button>
                 </div>
                 <div id="LTC-EUR" class="p-5 bg-white rounded shadow-md text-center">
                     <div class="text-xl text-gray-400 crypto-name flex items-center justify-center mb-2"></div>
@@ -96,6 +113,11 @@
                         class="text-white hover:bg-gray-600 rounded bg-gray-400 py-1 px-3 text-xs font-bold cursor-pointer btn-filter-crypto mt-1"
                         data-crypto="LTC-EUR">
                         Filtrer
+                    </button>
+                    <button
+                        class="text-white hover:bg-gray-600 rounded bg-gray-400 py-1 px-3 text-xs font-bold cursor-pointer btn-show-modal mt-1"
+                        data-crypto="LTC-EUR">
+                        Historique
                     </button>
                 </div>
             </div>
@@ -152,6 +174,7 @@
         </div>
     </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="../js/socket.io.min.js"></script>
     <script src="../js/main.js"></script>
 </body>
