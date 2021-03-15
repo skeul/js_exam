@@ -65,7 +65,12 @@ document.addEventListener("DOMContentLoaded", () => {
     /**
     * Get list of trades
     */
-    fetch("/list-crypto")
+    fetch("/list-crypto", {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+    })
         .then((res) => res.json())
         .then((list) => {
             trades = list;
@@ -74,7 +79,8 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         })
         .then(() => {
-            listenClose();
+            listenClose()
+            listenFilters()
         })
 
     /**
@@ -86,7 +92,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 name: btn.dataset.crypto,
             }
             fetch("/add", {
-
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
@@ -100,7 +105,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     trades.push(trade)
                 })
                 .then(() => {
-                    listenClose();
+                    listenClose()
+                    listenFilters()
                 })
         })
     })
@@ -131,6 +137,19 @@ document.addEventListener("DOMContentLoaded", () => {
                         removeRow.remove()
                         displayClosedTrade(trade, closedTradesTable)
                     })
+            })
+        })
+    }
+
+    function listenFilters() {
+        document.querySelectorAll('button.btn-filter-crypto').forEach((btn) => {
+            btn.addEventListener("click", () => {
+                const className = btn.dataset.crypto.toLowerCase()
+                const tablesRows = document.querySelectorAll('#crypto-trades-list tr, #crypto-closed-trades-list tr')
+                tablesRows.forEach((row) => {
+                    if (row.classList.contains(className))
+                        row.classList.toggle('hide')
+                })
             })
         })
     }
@@ -225,6 +244,7 @@ function displayTrade(trade, parent) {
             'lg:flex-no-wrap',
             'mb-10',
             'lg:mb-0',
+            trade.crypto.toLowerCase(),
         ],
         trade._id
     )
@@ -358,6 +378,7 @@ function displayClosedTrade(trade, parent) {
             'lg:flex-no-wrap',
             'mb-10',
             'lg:mb-0',
+            trade.crypto.toLowerCase(),
         ],
         trade._id
     )

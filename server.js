@@ -80,6 +80,10 @@ app.get('/', (req, res) => {
  */
 app.get('/list-crypto', (req, res) => {
     db.collection("trade").find().toArray((error, docs) => {
+        res.set({
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+        });
         console.log(docs)
         res.json(docs)
     })
@@ -163,8 +167,6 @@ io.on('connect', (socket) => {
                 });
         })
     }, 2000)
-
-
 })
 
 server.listen(port, () => console.log(`Listening on port ${port}`))

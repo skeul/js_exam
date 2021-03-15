@@ -1,3 +1,6 @@
+* {
+  outline: none; }
+
 .loader {
   border-top-color: #3498db;
   -webkit-animation: spinner 1.5s linear infinite;
@@ -29,7 +32,7 @@
 .current-prices #LTC-EUR .crypto-name::before {
   background-image: url("../assets/svg/LTC.svg"); }
 
-#crypto-trades-list .btc-eur::before, #crypto-closed-trades-list .btc-eur::before {
+#crypto-trades-list td.btc-eur::before, #crypto-closed-trades-list td.btc-eur::before {
   content: '';
   display: inline-block;
   vertical-align: middle;
@@ -40,7 +43,7 @@
   background-repeat: no-repeat;
   background-position: center;
   background-size: 20px; }
-#crypto-trades-list .eth-eur::before, #crypto-closed-trades-list .eth-eur::before {
+#crypto-trades-list td.eth-eur::before, #crypto-closed-trades-list td.eth-eur::before {
   content: '';
   display: inline-block;
   vertical-align: middle;
@@ -51,7 +54,7 @@
   background-repeat: no-repeat;
   background-position: center;
   background-size: 20px; }
-#crypto-trades-list .ltc-eur::before, #crypto-closed-trades-list .ltc-eur::before {
+#crypto-trades-list td.ltc-eur::before, #crypto-closed-trades-list td.ltc-eur::before {
   content: '';
   display: inline-block;
   vertical-align: middle;
@@ -62,5 +65,8 @@
   background-repeat: no-repeat;
   background-position: center;
   background-size: 20px; }
+
+.hide {
+  display: none; }
 
 /*# sourceMappingURL=style.css.map */

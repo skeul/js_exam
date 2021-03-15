@@ -1,3 +1,6 @@
+*{
+  outline: none;
+}
 .loader {
   border-top-color: #3498db;
   -webkit-animation: spinner 1.5s linear infinite;
@@ -52,7 +55,7 @@
 }
 
 #crypto-trades-list, #crypto-closed-trades-list {
-  & .btc-eur {
+  & td.btc-eur {
     &::before {
       content: '';
       display: inline-block;
@@ -66,7 +69,7 @@
       background-size: 20px;
     }
   }
-  & .eth-eur {
+  & td.eth-eur {
     &::before {
       content: '';
       display: inline-block;
@@ -80,7 +83,7 @@
       background-size: 20px;
     }
   }
-  & .ltc-eur {
+  & td.ltc-eur {
     &::before {
       content: '';
       display: inline-block;
@@ -94,4 +97,8 @@
       background-size: 20px;
     }
   }
+}
+
+.hide {
+  display: none;
 }
