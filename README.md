@@ -12,14 +12,12 @@ This project was done within the framework of my bachelor’s degree DIM, class 
 <br>
 
 ## Installation
-----
 It's a node project.
 After cloning the project, you must install the dependencies. 
 
     $ npm install
 
 ## Project dependencies
-----
 This project needs the following dependencies to work :
 
     "coinbase-pro": "^0.9.0",
@@ -29,7 +27,6 @@ This project needs the following dependencies to work :
     "socket.io": "^4.0.0"
 
 ## Running app
-----
 Once the dependencies are installed, you need to start the project with cmd :
 
     $ nodemon serve
