@@ -35,5 +35,6 @@ Once the dependencies are installed, you need to start the project with cmd :
 
     $ nodemon serve
 
-And you can access the application through the following url [http://localhost:3000](http://localhost:3000/)
+And you can access the application through the following url [http://localhost:3000](http://localhost:3000/).
+
 The server port(3000) and the mongodb port(27017) is set in config.js
