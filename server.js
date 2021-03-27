@@ -4,14 +4,15 @@ const http = require("http")
 const CoinbasePro = require('coinbase-pro');
 let MongoClient = require("mongodb").MongoClient;
 const bodyParser = require("body-parser")
-
+const config = require('./config');
 
 /**
 * Server params and init
 */
 const app = express()
 app.use(bodyParser.json())
-const port = 3000
+const port = config.serverport
+const mongoPort = config.mongoport
 const server = http.Server(app)
 const io = socketio(server)
 
@@ -41,7 +42,7 @@ const publicClient = new CoinbasePro.PublicClient();
 /**
 * Init Mongo DB
 */
-const mongo = new MongoClient("mongodb://localhost:27017",
+const mongo = new MongoClient(`mongodb://localhost:${mongoPort}`,
     { useNewUrlParser: true, useUnifiedTopology: true });
 var ObjectID = require('mongodb').ObjectID;
 let db = null;

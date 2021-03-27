@@ -28,9 +28,12 @@ This project needs the following dependencies to work :
 
 The project also use [Tailwindcss](https://tailwindcss.com/) framework and [Apexchart.js](https://apexcharts.com/).
 
+To run the project you need to install [Mongodb](https://docs.mongodb.com/manual/installation/).
+
 ## Running app
 Once the dependencies are installed, you need to start the project with cmd :
 
     $ nodemon serve
 
 And you can access the application through the following url [http://localhost:3000](http://localhost:3000/)
+The server port(3000) and the mongodb port(27017) is set in config.js
