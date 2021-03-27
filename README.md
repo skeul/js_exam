@@ -26,7 +26,7 @@ This project needs the following dependencies to work :
     "nodemon": "^2.0.7",
     "socket.io": "^4.0.0"
 
-The project also use [https://tailwindcss.com/](tailwindcss) framework and [https://apexcharts.com/](Apexchart.js).
+The project also use [Tailwindcss](https://tailwindcss.com/) framework and [Apexchart.js](https://apexcharts.com/).
 
 ## Running app
 Once the dependencies are installed, you need to start the project with cmd :
